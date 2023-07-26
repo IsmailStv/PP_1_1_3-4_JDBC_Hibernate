@@ -4,16 +4,18 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Table
 public class User {
     @Id
+    @Column
     private Long id;
 
     @Column
     private String name;
 
     @Column
-    private String lastName;
+    private String last_name;
 
     @Column
     private Byte age;
@@ -22,9 +24,9 @@ public class User {
 
     }
 
-    public User(String name, String lastName, Byte age) {
+    public User(String name, String last_name, Byte age) {
         this.name = name;
-        this.lastName = lastName;
+        this.last_name = last_name;
         this.age = age;
     }
 
@@ -45,11 +47,11 @@ public class User {
     }
 
     public String getLastName() {
-        return lastName;
+        return last_name;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.last_name = last_name;
     }
 
     public Byte getAge() {
@@ -65,7 +67,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", last_name='" + last_name + '\'' +
                 ", age=" + age +
                 '}';
     }

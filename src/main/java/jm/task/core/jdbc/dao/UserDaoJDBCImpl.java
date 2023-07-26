@@ -22,17 +22,19 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     // Создание таблицы для User(ов) – не должно приводить к исключению, если такая таблица уже существует
+    @Override
     public void createUsersTable() {
 
         try (Statement statement = conn.createStatement()) {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS users " +
-                    "(id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), lastName VARCHAR(255), age INT)");
+                    "(id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), last_name VARCHAR(255), age TINYINT)");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     // Удаление таблицы User(ов) – не должно приводить к исключению, если таблицы не существует
+    @Override
     public void dropUsersTable() {
 
         try (Statement statement = conn.createStatement()) {
@@ -43,12 +45,13 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     // Добавление User в таблицу
-    public void saveUser(String name, String lastName, byte age) {
+    @Override
+    public void saveUser(String name, String last_name, byte age) {
 
-        try (PreparedStatement pstm = conn.prepareStatement("INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)")) {
+        try (PreparedStatement pstm = conn.prepareStatement("INSERT INTO users (name, last_name, age) VALUES (?, ?, ?)")) {
             conn.setAutoCommit(false);
             pstm.setString(1, name);
-            pstm.setString(2, lastName);
+            pstm.setString(2, last_name);
             pstm.setByte(3, age);
             pstm.executeUpdate();
             conn.commit();
@@ -69,6 +72,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     // Удаление User из таблицы ( по id )
+    @Override
     public void removeUserById(long id) {
 
         try (PreparedStatement pstm = conn.prepareStatement("DELETE FROM users WHERE id = ?")) {
@@ -93,14 +97,14 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     // Получение всех User(ов) из таблицы
+    @Override
     public List<User> getAllUsers() {
-//        return null;
         List<User> users = new ArrayList<>();
 
         try (ResultSet resultSet = conn.createStatement().executeQuery("SELECT * FROM users")) {
             while(resultSet.next()) {
                 User user = new User(resultSet.getString("name"),
-                        resultSet.getString("lastName"), resultSet.getByte("age"));
+                        resultSet.getString("last_name"), resultSet.getByte("age"));
                 user.setId(resultSet.getLong("id"));
                 users.add(user);
             }
@@ -112,6 +116,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     // Очистка содержания таблицы
+    @Override
     public void cleanUsersTable() {
 
         try (Statement statement = conn.createStatement()) {
@@ -120,11 +125,11 @@ public class UserDaoJDBCImpl implements UserDao {
             conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+//            try {
+//                conn.rollback();
+//            } catch (SQLException ex) {
+//                ex.printStackTrace();
+//            }
         } finally {
             try {
                 conn.setAutoCommit(true);

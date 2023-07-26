@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class Util {
     private static final String urlJDBC = "jdbc:mysql://localhost:3306/taskjdbc?useSSL=false";
     private static final String userName = "root";
-    private static final String userPassword = "753421Qq2211";
+    private static final String userPassword = "mypass";
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(urlJDBC, userName, userPassword);

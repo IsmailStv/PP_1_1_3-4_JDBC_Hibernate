@@ -3,12 +3,18 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
     private static Connection conn = null;
+
     {
         try {
             conn = Util.getConnection();
@@ -102,7 +108,7 @@ public class UserDaoJDBCImpl implements UserDao {
         List<User> users = new ArrayList<>();
 
         try (ResultSet resultSet = conn.createStatement().executeQuery("SELECT * FROM users")) {
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 User user = new User(resultSet.getString("name"),
                         resultSet.getString("last_name"), resultSet.getByte("age"));
                 user.setId(resultSet.getLong("id"));
@@ -125,11 +131,6 @@ public class UserDaoJDBCImpl implements UserDao {
             conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-//            try {
-//                conn.rollback();
-//            } catch (SQLException ex) {
-//                ex.printStackTrace();
-//            }
         } finally {
             try {
                 conn.setAutoCommit(true);

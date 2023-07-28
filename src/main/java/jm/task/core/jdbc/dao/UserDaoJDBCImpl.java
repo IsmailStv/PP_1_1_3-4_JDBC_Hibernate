@@ -52,12 +52,12 @@ public class UserDaoJDBCImpl implements UserDao {
 
     // Добавление User в таблицу
     @Override
-    public void saveUser(String name, String last_name, byte age) {
+    public void saveUser(String name, String lastName, byte age) {
 
         try (PreparedStatement pstm = conn.prepareStatement("INSERT INTO users (name, last_name, age) VALUES (?, ?, ?)")) {
             conn.setAutoCommit(false);
             pstm.setString(1, name);
-            pstm.setString(2, last_name);
+            pstm.setString(2, lastName);
             pstm.setByte(3, age);
             pstm.executeUpdate();
             conn.commit();

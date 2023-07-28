@@ -17,8 +17,8 @@ public class UserServiceImpl implements UserService {
         userDao.dropUsersTable();
     }
 
-    public void saveUser(String name, String last_name, byte age) {
-        userDao.saveUser(name, last_name, age);
+    public void saveUser(String name, String lastName, byte age) {
+        userDao.saveUser(name, lastName, age);
         System.out.println("User name: " + name + " added to data base.");
     }
 
